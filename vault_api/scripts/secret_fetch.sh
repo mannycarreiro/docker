@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd $(dirname $0)/..
+cd $(dirname $0)/env_files_dir
 CURRENT_DIR=$(pwd)
 
 vault_show_help(){

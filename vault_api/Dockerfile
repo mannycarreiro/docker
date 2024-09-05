@@ -1,11 +1,10 @@
 FROM alpine:latest
 LABEL MAINTAINER="Manny Carreiro"
 RUN apk update && \
-     apk install jq curl && \
-     mkdir -p /opt/secret_fetch/envfiles_output && \
-     mkdir -p /opt/secret_fetch/env_files && \
+     apk add jq curl && \
+     mkdir -p /opt/secret_fetch/env_files_dir && \
      adduser -D vault && \
      chown vault:vault -R /opt/secret_fetch
-COPY 
-CMD [ "/bin/sh" ]
-ENTRYPOINT [ "/opt/secret_fetch/secret_fetch.sh" ]
+COPY scripts/secret_fetch.sh /opt/secret_fetch/ 
+WORKDIR /opt/secret_fetch
+CMD ["/bin/sh", "-C", "./secret_fetch.sh"]
