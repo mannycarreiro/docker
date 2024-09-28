@@ -6,7 +6,7 @@ services:
     env_file:
       - zipline.env
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - /mnt/docker_data/zipline/pg_data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
@@ -23,8 +23,8 @@ services:
     env_file:
       - zipline.env
     volumes:
-      - './uploads:/zipline/uploads'
-      - './public:/zipline/public'
+      - /mnt/docker_data/zipline/uploads:/zipline/uploads
+      - /mnt/docker_data/zipline/public:/zipline/public
     networks:
       - zipline
     depends_on:
