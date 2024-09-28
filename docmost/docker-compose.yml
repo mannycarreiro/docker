@@ -14,7 +14,7 @@ services:
       - "3000:3000"
     restart: unless-stopped
     volumes:
-      - ./application/storage:/app/data/storage
+      - /mnt/docker_data/docmost/app:/app/data/storage
     networks:
       - docmost
 
@@ -26,7 +26,7 @@ services:
       - db.env
     restart: unless-stopped
     volumes:
-      - ./application/postgres_db:/var/lib/postgresql/data
+      - /mnt/docker_data/docmost/postgres_db:/var/lib/postgresql/data
     networks:
       - docmost
 
@@ -34,7 +34,7 @@ services:
     image: redis:7.2-alpine
     restart: unless-stopped
     volumes:
-      - /application/redis_data:/data
+      - /mnt/docker_data/docmost/redis_data:/data
     networks:
       - docmost
 
