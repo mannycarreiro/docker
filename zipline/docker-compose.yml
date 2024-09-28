@@ -12,6 +12,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - zipline
 
   zipline:
     image: ghcr.io/diced/zipline
@@ -23,8 +25,12 @@ services:
     volumes:
       - './uploads:/zipline/uploads'
       - './public:/zipline/public'
+    networks:
+      - zipline
     depends_on:
       - 'postgres'
 
 volumes:
   pg_data:
+networks:
+  zipline:
