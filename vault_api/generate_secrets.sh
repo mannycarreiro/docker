@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 /usr/bin/clear
@@ -32,7 +31,7 @@ for v in ${variables}; do
     validatevars "${v}"
 done
 
-if [ ${RC} == 1 ]; then
+if [[ "${RC}" -eq 1 ]]; then
    help
 fi
 
