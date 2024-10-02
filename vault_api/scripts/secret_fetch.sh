@@ -94,6 +94,7 @@ generate_new_env_files(){
 	mv ${CURRENT_DIR}/${file} ${CURRENT_DIR}/${file}.original && mv ${CURRENT_DIR}/${file}.tmp ${CURRENT_DIR}/${file}
     done
 }
+echo "Current directory is ${CURRENT_DIR}"
 vault_validate
 vault_generate_token
 generate_new_env_files
