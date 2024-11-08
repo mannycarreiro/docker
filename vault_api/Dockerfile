@@ -1,7 +1,7 @@
-FROM alpine:latest
+FROM python:3.12-alpine3.20
 LABEL MAINTAINER="Manny Carreiro"
 RUN apk update && \
-     apk add jq curl && \
+     apk add jq curl && pip install PYYaml --root-user-action=ignore && \
      mkdir -p /opt/secret_fetch/env_files_dir && \
      adduser -D vault && \
      chown vault:vault -R /opt/secret_fetch

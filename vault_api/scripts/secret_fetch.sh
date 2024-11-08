@@ -1,7 +1,8 @@
 #!/bin/bash
 
-cd $(dirname $0)/env_files_dir
+cd env_files_dir
 CURRENT_DIR=$(pwd)
+echo "Current Directory is ${CURRENT_DIR}"
 
 vault_show_help(){
     echo ""
@@ -60,13 +61,14 @@ vault_generate_token(){
 }
 
 get_env_filenames(){
-  FILELIST=$(ls *.env)
-  NUM_FILES=$(echo ${FILELIST} | wc -l)
+  NUM_FILES=$(find $PWD -type f -name "env" -o -name "*.env" | wc -l)
   if [ ${NUM_FILES} -eq 0 ]; then
       echo "No files to process"
       exit 0
   else
 	  echo "Found ${NUM_FILES} file(s) to process"
+	  FILELIST=$(find $PWD -type f -name "env" -o -name "*.env")
+	  echo -e "File List is: ${FILELIST}"
   fi
 
 }
@@ -74,27 +76,35 @@ get_env_filenames(){
 generate_new_env_files(){
     get_env_filenames
     for file in ${FILELIST}; do
+	echo -e "\n PROCESSING ${file}\n"
+	cat ${file}
+	echo -e "\n"
+	ENV_FILENAME=$(basename ${file})
         echo "Fetching secrets from ${file}"
-	echo -n "" > ${CURRENT_DIR}/${file}.tmp
+	ENV_TEMP_FILENAME=${ENV_FILENAME}.tmp
+	cd $(dirname ${file})
+	echo -n "" > ${ENV_TEMP_FILENAME}
         while IFS= read -r line; do
             SECRETNAME=$(echo ${line} | cut -d'=' -f1)
-            echo "Secret Name: ${SECRETNAME}"
-            vault_get_credential ${SECRETNAME}
-            if [ "${SECRET_VALUE}" != "null" ]; then
-            	echo "Updating ${SECRETNAME} in ${file}"
-            	export ${SECRETNAME}="${SECRET_VALUE}"
-            	echo "${SECRETNAME}=${SECRET_VALUE}" >> ${CURRENT_DIR}/${file}.tmp
-	    else
-		echo "${SECRETNAME} is not in vault.Copying same value to env file"
-		NONSECRETVALUE=$(echo ${line} | cut -d'=' -f2)
-		echo "${SECRETNAME}=${NONSECRETVALUE}" >> ${CURRENT_DIR}/${file}.tmp
-            fi
-        done < ${CURRENT_DIR}/${file}
-	echo "Renaming ${CURRENT_DIR}/${file} to ${CURRENT_DIR}/${file}.original and ${CURRENT_DIR}/${file}.tmp to ${CURRENT_DIR}/${file}.env"
-	mv ${CURRENT_DIR}/${file} ${CURRENT_DIR}/${file}.original && mv ${CURRENT_DIR}/${file}.tmp ${CURRENT_DIR}/${file}
+	    if [ ! -z "${SECRETNAME}" ]; then
+            	echo "Secret Name: ${SECRETNAME}"
+            	vault_get_credential ${SECRETNAME}
+            	    if [ "${SECRET_VALUE}" != "null" ]; then
+            	        echo "Updating ${SECRETNAME} in ${file}"
+            		export ${SECRETNAME}="${SECRET_VALUE}"
+            		echo "${SECRETNAME}=${SECRET_VALUE}" >> ${ENV_TEMP_FILENAME}
+	    	    else
+		        echo "${SECRETNAME} is not in vault.Copying same value to env file"
+		        NONSECRETVALUE=$(echo "${line}" | cut -d'=' -f2)
+		        echo "${SECRETNAME}=${NONSECRETVALUE}" >> ${ENV_TEMP_FILENAME}
+                    fi
+	         echo "Blank Line . . . Skipping"
+             fi
+        done < ${file}
+	echo "Renaming ${file} to ${file}.original and ${file}.tmp to ${file}.env"
+	mv ${file} ${file}.original && mv ${file}.tmp ${file}
     done
 }
-echo "Current directory is ${CURRENT_DIR}"
 vault_validate
 vault_generate_token
 generate_new_env_files

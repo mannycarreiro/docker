@@ -37,7 +37,7 @@ fi
 
 cd $(dirname "$0")
 
-docker build -t vaultapi . && docker run --rm -it -v ${VAULT_ENV_FILES_DIR}:/opt/secret_fetch/env_files_dir \
+docker build -t vaultapi . && docker run --rm -it --privileged --name=vaultapi_${VAULT_APPNAME} -v ${VAULT_ENV_FILES_DIR}:/opt/secret_fetch/env_files_dir \
        	-e VAULT_ADDR="${VAULT_ADDR}" \
         -e VAULT_ROLE_ID="${VAULT_ROLE_ID}" \
         -e VAULT_SECRET_ID="${VAULT_SECRET_ID}" \
