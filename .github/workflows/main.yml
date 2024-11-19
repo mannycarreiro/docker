@@ -11,3 +11,13 @@ jobs:
     - name: ehofehofi
       run: |
         python3 /tmp/main.py
+    
+    - name: Grep output
+      id: GetOut
+      run: |
+        output=$(python3 /tmp/main.py)
+        echo "::set-output name=script-output::$output"
+    
+    - name: Display previous step
+      run: | 
+        echo "${{ steps.GetOut.outputs.script-output }} | jq"
