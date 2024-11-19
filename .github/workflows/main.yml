@@ -1,0 +1,12 @@
+name: Testing
+
+on: workflow_dispatch
+
+jobs:
+  main:
+    name: nfiwjeof
+    runs-on: [self-hosted]
+  
+    steps:
+    - name: ehofehofi
+      run: echo "Hello World"
