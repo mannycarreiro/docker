@@ -10,4 +10,4 @@ jobs:
     steps:
     - name: ehofehofi
       run: |
-        python3 -c 'import os; print("{"hello":"something"}")'
+        python3 -c 'import os; print('{"hello":"something"}')'
