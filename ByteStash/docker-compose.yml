@@ -1,0 +1,15 @@
+services:
+  bytestash:
+    image: "ghcr.io/jordan-dalby/bytestash:latest"
+    container_name: bytestash
+    volumes:
+      - /path/to/data:/data/snippets
+    ports:
+      - 5000:5000
+    environment:
+      - BASE_PATH=
+      - TOKEN_EXPIRY=24h
+    env_file:
+      - ByteStash.env  
+    restart: unless-stopped
+
