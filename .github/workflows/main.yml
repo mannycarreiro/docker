@@ -12,6 +12,11 @@ jobs:
       id: get-data
       run: |
         python3 /tmp/main.py >> ${GITHUB_OUTPUT}
+
+    - name: Get Information2
+      id: get-data2
+      run: |
+        python3 /tmp/main.py >> ${GITHUB_ENV}
     
     - name: Load Information
       run: | 
@@ -19,3 +24,6 @@ jobs:
         ${{ steps.get-data.outputs.data }}"""); 
         print(j.get("name"))'''
 
+    - name: Print Environment Variable
+      run: | 
+        echo "${data}"
