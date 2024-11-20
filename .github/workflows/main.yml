@@ -13,6 +13,7 @@ jobs:
       run: |
         python3 /tmp/main.py >> ${GITHUB_OUTPUT}
     
-    - name: Display Information
+    - name: Load Information
       run: | 
-        echo '${{ steps.get-data.outputs.data }}' | jq -r .file
+        python3 -c 'import json; j=json.loads(${{ steps.get-data.outputs.data }})'; print(j.get("name")'
+
