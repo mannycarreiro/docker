@@ -8,16 +8,11 @@ jobs:
     runs-on: [self-hosted]
   
     steps:
-    - name: ehofehofi
+    - name: Get Information
+      id: get-data
       run: |
-        python3 /tmp/main.py
+        python3 /tmp/main.py >> "$GITHUB_OUTPUT"
     
-    - name: Grep output
-      id: GetOut
-      run: |
-        output=$(python3 /tmp/main.py)
-        echo "::set-output name=script-output::$output"
-    
-    - name: Display previous step
+    - name: Display Information
       run: | 
-        echo "${{ steps.GetOut.outputs.script-output }} | jq"
+        echo ${{ steps.get-data.outputs }} | jq
