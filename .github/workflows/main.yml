@@ -15,4 +15,4 @@ jobs:
     
     - name: Display Information
       run: | 
-        echo ${{ steps.get-data.outputs }} | jq
+        echo ${{ steps.get-data.outputs.data }} | jq
