@@ -16,5 +16,6 @@ jobs:
     - name: Load Information
       run: | 
         python3 -c '''import json; j=json.loads("""
-        ${{ steps.get-data.outputs.data }}"""); print(j.get("name"))'''
+        ${{ steps.get-data.outputs.data }}"""); 
+        print(j.get("name"))'''
 
