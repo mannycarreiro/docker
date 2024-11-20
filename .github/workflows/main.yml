@@ -11,7 +11,7 @@ jobs:
     - name: Get Information
       id: get-data
       run: |
-        python3 /tmp/main.py >> "$GITHUB_OUTPUT"
+        python3 /tmp/main.py >> ${GITHUB_OUTPUT}
     
     - name: Display Information
       run: | 
